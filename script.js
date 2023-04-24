@@ -1,3 +1,10 @@
+const urlInput = document.getElementById('urlInput');
+const generateBtn = document.getElementById('generateBtn');
+const qrCodeDiv = document.getElementById('qrCode');
+const downloadBtn = document.getElementById('downloadBtn');
+
+generateBtn.addEventListener('click', generateQRCode);
+
 function generateQRCode() {
   const url = urlInput.value;
   if (url === '') {
@@ -17,9 +24,9 @@ function generateQRCode() {
   qrCodeDiv.style.display = 'block';
   downloadBtn.style.display = 'block';
   downloadBtn.disabled = false;
-
-  setTimeout(downloadQRCode, 500); // Add delay before calling downloadQRCode
 }
+
+downloadBtn.addEventListener('click', downloadQRCode);
 
 function downloadQRCode() {
   const qrCodeImage = qrCodeDiv.querySelector('img');
