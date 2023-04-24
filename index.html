@@ -1,11 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
 	<title>QR Code Generator</title>
 	<link rel="stylesheet" type="text/css" href="style.css">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 </head>
 <body>
 	<div class="container">
@@ -14,11 +11,11 @@
 		<input type="text" id="urlInput" placeholder="Enter URL here...">
 		<button id="generateBtn">Generate</button>
 		<div id="qrCode"></div>
-		<a href="#" id="downloadBtn" download="qr-code.png">Download QR Code</a>
+		<div id="downloadContainer"></div>
 	</div>
 
-	<script src="qrcode.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/qrcode@1.4.4/dist/qrcode.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 	<script src="script.js"></script>
-	
 </body>
 </html>
