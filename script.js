@@ -1,48 +1,36 @@
-const urlInput = document.getElementById('urlInput');
-const generateBtn = document.getElementById('generateBtn');
-const qrCodeDiv = document.getElementById('qrCode');
-const downloadBtn = document.getElementById('downloadBtn');
+const urlInput = document.getElementById("urlInput");
+		const generateBtn = document.getElementById("generateBtn");
+		const qrCodeDiv = document.getElementById("qrCode");
+		const downloadContainer = document.getElementById("downloadContainer");
 
-generateBtn.addEventListener('click', generateQRCode);
+		function generateQRCode() {
+			const url = urlInput.value;
 
-function generateQRCode() {
-  const url = urlInput.value;
-  if (url === '') {
-    alert('Please enter a URL');
-    return;
-  }
+			if (url.trim() === "") {
+				alert("Please enter a valid URL.");
+				return;
+			}
 
-  const qrCode = new QRCode(qrCodeDiv, {
-    text: url,
-    width: 256,
-    height: 256,
-    colorDark: '#000000',
-    colorLight: '#ffffff',
-    correctLevel: QRCode.CorrectLevel.H
-  });
+			qrCodeDiv.innerHTML = "";
 
-  qrCodeDiv.style.display = 'block';
-  downloadBtn.style.display = 'block';
-  downloadBtn.disabled = false;
-}
+			const qrCode = new QRCode(qrCodeDiv, {
+				text: url,
+				width: 256,
+				height: 256,
+				colorDark: "#000000",
+				colorLight: "#ffffff",
+				correctLevel: QRCode.CorrectLevel.H
+			});
 
-downloadBtn.addEventListener('click', downloadQRCode);
+			const canvas = qrCode._el.firstChild;
+			const dataURL = canvas.toDataURL();
 
-function downloadQRCode() {
-  const canvas = document.getElementById("qrCodeCanvas");
-  const dataURL = canvas.toDataURL("image/png");
+			const downloadLink = document.createElement("a");
+			downloadLink.href = dataURL;
+			downloadLink.download = "qrcode.png";
+			downloadLink.textContent = "Download QR Code";
+			downloadContainer.innerHTML = "";
+			downloadContainer.appendChild(downloadLink);
+		}
 
-  if (navigator.share) {
-    navigator.share({
-      title: "QR Code",
-      text: "Check out this QR code!",
-      url: dataURL,
-    })
-    .catch((error) => console.log(error));
-  } else {
-    const link = document.createElement("a");
-    link.download = "qr-code.png";
-    link.href = dataURL;
-    link.click();
-  }
-}
+		generateBtn.addEventListener("click", generateQRCode);
