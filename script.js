@@ -1,9 +1,3 @@
-const urlInput = document.getElementById('urlInput');
-const generateBtn = document.getElementById('generateBtn');
-const qrCodeDiv = document.getElementById('qrCode');
-
-generateBtn.addEventListener('click', generateQRCode);
-
 function generateQRCode() {
   const url = urlInput.value;
   if (url === '') {
@@ -11,17 +5,26 @@ function generateQRCode() {
     return;
   }
 
-  const canvas = document.createElement('canvas');
-  const context = canvas.getContext('2d');
-  const qrCode = jsQR(url, canvas.width, canvas.height);
+  const qrCode = new QRCode(qrCodeDiv, {
+    text: url,
+    width: 256,
+    height: 256,
+    colorDark: '#000000',
+    colorLight: '#ffffff',
+    correctLevel: QRCode.CorrectLevel.H
+  });
 
-  if (qrCode) {
-    canvas.width = qrCode.width;
-    canvas.height = qrCode.height;
-    context.drawImage(qrCode.imageData, 0, 0);
-    const qrCodeImage = new Image();
-    qrCodeImage.src = canvas.toDataURL();
-    qrCodeDiv.innerHTML = '';
-    qrCodeDiv.appendChild(qrCodeImage);
-  }
+  qrCodeDiv.style.display = 'block';
+  downloadBtn.style.display = 'block';
+  downloadBtn.disabled = false;
+
+  setTimeout(downloadQRCode, 500); // Add delay before calling downloadQRCode
+}
+
+function downloadQRCode() {
+  const qrCodeImage = qrCodeDiv.querySelector('img');
+  const downloadLink = document.createElement('a');
+  downloadLink.href = qrCodeImage.src;
+  downloadLink.download = 'qr-code.png';
+  downloadLink.click();
 }
