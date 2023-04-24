@@ -1,3 +1,10 @@
+const urlInput = document.getElementById('urlInput');
+const generateBtn = document.getElementById('generateBtn');
+const qrCodeDiv = document.getElementById('qrCode');
+const downloadBtn = document.getElementById('downloadBtn');
+
+generateBtn.addEventListener('click', generateQRCode);
+
 function generateQRCode() {
   const url = urlInput.value;
   if (url === '') {
@@ -5,9 +12,8 @@ function generateQRCode() {
     return;
   }
 
-  // create a new QRCode instance with options
-  const qrCode = new QRCode({
-    content: url,
+  const qrCode = new QRCode(qrCodeDiv, {
+    text: url,
     width: 256,
     height: 256,
     colorDark: '#000000',
@@ -15,22 +21,17 @@ function generateQRCode() {
     correctLevel: QRCode.CorrectLevel.H
   });
 
-  // get the generated QR code image
-  const qrCodeImage = qrCode._el.firstChild;
-
-  // append the image to the qrCodeDiv
-  qrCodeDiv.appendChild(qrCodeImage);
-
   qrCodeDiv.style.display = 'block';
   downloadBtn.style.display = 'block';
   downloadBtn.disabled = false;
 }
-const imageUrl = 'https://example.com/image.png';
-const imageName = 'my-image.png';
-downloadImage(imageUrl, imageName);
-function downloadImage(url, name) {
-  const link = document.createElement('a');
-  link.href = url;
-  link.download = name;
-  link.click();
+
+downloadBtn.addEventListener('click', downloadQRCode);
+
+function downloadQRCode() {
+  const qrCodeImage = qrCodeDiv.querySelector('img');
+  const downloadLink = document.createElement('a');
+  downloadLink.href = qrCodeImage.src;
+  downloadLink.download = 'qr-code.png';
+  downloadLink.click();
 }
