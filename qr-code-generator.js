@@ -1,65 +1,48 @@
+const urlInput = document.getElementById("urlInput");
+const generateBtn = document.getElementById("generateBtn");
+const qrCodeDiv = document.getElementById("qrCode");
+const downloadContainer = document.getElementById("downloadContainer");
 
- @@ -4,40 +4,28 @@ const qrCodeDiv = document.getElementById("qrCode");
- const downloadContainer = document.getElementById("downloadContainer");
+function generateQRCode() {
+	const url = urlInput.value.trim();
 
- function generateQRCode() {
- 	const url = urlInput.value;
+	if (url === "") {
+		alert("Please enter a valid URL.");
+		return;
+	}
 
- 	if (url.trim() === "") {
- 		alert("Please enter a valid URL.");
- 		return;
- 	}
+	qrCodeDiv.innerHTML = "";
 
- 	qrCodeDiv.innerHTML = "";
+	const qrCode = new QRCode(qrCodeDiv, {
+		text: url,
+		width: 256,
+		height: 256,
+		colorDark: "#000000",
+		colorLight: "#ffffff",
+		correctLevel: QRCode.CorrectLevel.H
+	});
 
- 	const qrCode = new QRCode(qrCodeDiv, {
- 		text: url,
- 		width: 256,
- 		height: 256,
- 		colorDark: "#000000",
- 		colorLight: "#ffffff",
- 		correctLevel: QRCode.CorrectLevel.H
- 	});
+	const canvas = qrCode._el.firstChild;
+	canvas.toBlob(function(blob) {
+		const downloadLink = document.createElement("a");
+		downloadLink.download = "qrcode.png";
+		downloadLink.innerHTML = "Download QR Code";
+		if (window.navigator.msSaveBlob) { // For IE and Edge
+			downloadLink.addEventListener("click", function() {
+				window.navigator.msSaveBlob(blob, "qrcode.png");
+			});
+		} else {
+			downloadLink.href = URL.createObjectURL(blob);
+			downloadLink.onclick = function() {
+				requestAnimationFrame(function() {
+					URL.revokeObjectURL(downloadLink.href);
+					downloadLink.removeAttribute("href");
+				});
+			};
+		}
+		downloadContainer.innerHTML = "";
+		downloadContainer.appendChild(downloadLink);
+	});
+}
 
- 	const canvas = qrCode._el.firstChild;
- 	const dataURL = canvas.toDataURL();
-
- 	const downloadLink = document.createElement("a");
- 	downloadLink.href = dataURL;
- 	downloadLink.download = "qrcode.png";
- 	downloadLink.textContent = "Download QR Code";
- 	downloadContainer.innerHTML = "";
- 	downloadContainer.appendChild(downloadLink);
-
- 	function downloadQRCode() {
- 		canvas.toBlob(function(blob) {
- 			saveAs(blob, "qrcode.png");
- 		});
- 	}
- 	downloadLink.addEventListener("click", downloadQRCode);
-     const url = urlInput.value.trim();
-
-     if (url === "") {
-         alert("Please enter a valid URL.");
-         return;
-     }
-
-     qrCodeDiv.innerHTML = "";
-
-     const qrCode = new QRCode(qrCodeDiv, {
-         text: url,
-         width: 256,
-         height: 256,
-         colorDark: "#000000",
-         colorLight: "#ffffff",
-         correctLevel: QRCode.CorrectLevel.H
-     });
-
-     const canvas = qrCode._el.firstChild;
-     canvas.toBlob(function(blob) {
-         saveAs(blob, "qrcode.png");
-     });
- }
-
- generateBtn.addEventListener("click
- generateBtn.addEventListener("click", generateQRCode
+generateBtn.addEventListener("click", generateQRCode);
