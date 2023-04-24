@@ -25,3 +25,12 @@ function generateQRCode() {
   downloadBtn.style.display = 'block';
   downloadBtn.disabled = false;
 }
+const imageUrl = 'https://example.com/image.png';
+const imageName = 'my-image.png';
+downloadImage(imageUrl, imageName);
+function downloadImage(url, name) {
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = name;
+  link.click();
+}
