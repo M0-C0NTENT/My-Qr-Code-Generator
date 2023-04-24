@@ -10,6 +10,13 @@ const urlInput = document.getElementById("urlInput");
 				alert("Please enter a valid URL.");
 				return;
 			}
+			function downloadQRCode() {
+  var canvas = document.getElementById("qrCodeCanvas");
+  canvas.toBlob(function(blob) {
+    saveAs(blob, "qrcode.png");
+  });
+}
+
 
 			qrCodeDiv.innerHTML = "";
 
