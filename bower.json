@@ -1,18 +1,21 @@
 {
-  "name": "qrcode.js",
-  "version": "0.0.1",
-  "homepage": "https://github.com/davidshimjs/qrcodejs",
+  "name": "file-saver",
+  "main": "dist/FileSaver.min.js",
+  "version": "2.0.0-rc.3",
+  "homepage": "https://github.com/eligrey/FileSaver.js",
   "authors": [
-    "Sangmin Shim", "Sangmin Shim <ssm0123@gmail.com> (http://jaguarjs.com)"
+    "Eli Grey <me@eligrey.com>"
   ],
-  "description": "Cross-browser QRCode generator for javascript",
-  "main": "qrcode.js",
+  "description": "An HTML5 saveAs() FileSaver implementation",
+  "keywords": [
+    "filesaver",
+    "saveas",
+    "blob"
+  ],
+  "license": "MIT",
   "ignore": [
-    "bower_components",
-    "node_modules",
-    "index.html",
-    "index.svg",
-    "jquery.min.js",
-    "qrcode.min.js"
+      "*",
+      "!dist/*",
+      "!LICENSE.md"
   ]
 }
