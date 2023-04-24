@@ -29,9 +29,20 @@ function generateQRCode() {
 downloadBtn.addEventListener('click', downloadQRCode);
 
 function downloadQRCode() {
-  const qrCodeImage = qrCodeDiv.querySelector('img');
-  const downloadLink = document.createElement('a');
-  downloadLink.href = qrCodeImage.src;
-  downloadLink.download = 'qr-code.png';
-  downloadLink.click();
+  const canvas = document.getElementById("qrCodeCanvas");
+  const dataURL = canvas.toDataURL("image/png");
+
+  if (navigator.share) {
+    navigator.share({
+      title: "QR Code",
+      text: "Check out this QR code!",
+      url: dataURL,
+    })
+    .catch((error) => console.log(error));
+  } else {
+    const link = document.createElement("a");
+    link.download = "qr-code.png";
+    link.href = dataURL;
+    link.click();
+  }
 }
